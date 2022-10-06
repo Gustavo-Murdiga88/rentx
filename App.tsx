@@ -14,6 +14,8 @@ import {
 
 import { Home } from "./src/screens/Home";
 import { theme } from "./src/styles/theme";
+import { CarDetails } from "./src/screens/CarDetails";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -30,7 +32,14 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Home />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        {/* <Home /> */}
+        <CarDetails
+          images={[
+            "https://w7.pngwing.com/pngs/833/338/png-transparent-audi-rs5-car-audi-q5-audi-s5-audi-convertible-car-performance-car.png",
+          ]}
+        />
+      </GestureHandlerRootView>
     </ThemeProvider>
   );
 }
