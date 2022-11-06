@@ -1,4 +1,6 @@
 import react from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
 import { BackButtonComponent } from "../../components/BackButton";
 import { CardFeatureOfCar } from "../../components/FeaturesOfCarCards";
 import {
@@ -17,24 +19,36 @@ import {
   Details,
   Rent,
   FeaturesOfCar,
+  Footer,
 } from "./styles";
 
 interface CarDetails {
-  images: string[];
+  images?: string[];
 }
 
-import Acceleration from "../../assets/acceleration.svg";
-import force from "../../assets/force.svg";
-import gasoline from "../../assets/gasoline.svg";
-import exchange from "../../assets/exchange.svg";
-import people from "../../assets/people.svg";
-import speed from "../../assets/speed.svg";
+import { Button } from "../../components/Button";
+import { CarsProps } from "../Home";
+import { getAccessoryIcon } from "../../utils/getAccessoryIcon";
+
+type Car = {
+  car: CarsProps; 
+}
 
 export function CarDetails({ images }: CarDetails) {
+
+  const route = useRoute();
+  const { car } = route.params as Car
+  const navigation = useNavigation();
+  function handleRentalPeriod(){
+    navigation.navigate('Scheduling' as never, { 
+      id: car.id,
+    } as never)
+  }
+
   return (
     <Container>
       <HeaderSlider>
-        <BackButtonComponent type="dark" onPress={() => console.log("oi")} />
+        <BackButtonComponent type="dark" onPress={() => navigation.goBack()} />
         <ActiveIndexes>
           <ActiveIndex active={true} />
           <ActiveIndex active={false} />
@@ -42,34 +56,29 @@ export function CarDetails({ images }: CarDetails) {
           <ActiveIndex active={false} />
         </ActiveIndexes>
       </HeaderSlider>
-      <CarSlide source={{ uri: images[0] }} resizeMode="contain" />
+      <CarSlide source={{ uri: car.photos[0] }} resizeMode="contain" />
 
      <Content showsVerticalScrollIndicator={false}>
         <Rent>
           <Car>
-            <Brand>Lamborghini</Brand>
-            <Model>Huracan</Model>
+            <Brand>{car.brand}</Brand>
+            <Model>{car.name}</Model>
           </Car>
           <Price>
-            <Period>Ao dia</Period>
-            <Value>R$ 580</Value>
+            <Period>{car.rent.period}</Period>
+            <Value>R$ {car.rent.price}</Value>
           </Price>
         </Rent>
         <FeaturesOfCar>
-          <CardFeatureOfCar subTitle="380km/h" Icon={speed} />
-          <CardFeatureOfCar subTitle="3.2s" Icon={Acceleration} />
-          <CardFeatureOfCar subTitle="800 HP" Icon={force} />
-          <CardFeatureOfCar subTitle="Gasolina" Icon={gasoline} />
-          <CardFeatureOfCar subTitle="Auto" Icon={exchange} />
-          <CardFeatureOfCar subTitle="2 pessoas" Icon={people} />
-
+          {car.accessories.map((accessories) => {
+           return  <CardFeatureOfCar key={accessories.name} subTitle={accessories.name} Icon={getAccessoryIcon(accessories.type)} />
+          })}
         </FeaturesOfCar>
-        <Details>
-          Este é automóvel desportivo. Surgiu do lendário touro de lide
-          indultado na praça Real Maestranza de Sevilla. É um belíssimo carro
-          para quem gosta de acelerar.
-        </Details>       
+        <Details>{car.about}</Details>       
       </Content>
+      <Footer>
+        <Button title="Escolher o período do aluguel" onPress={handleRentalPeriod} />
+      </Footer>
     </Container>
   );
 }

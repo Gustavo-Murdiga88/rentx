@@ -12,6 +12,7 @@ export const theme = {
     line: '#ebebf0',
 
     main: '#dc1637',
+    main_ligth: '#FDEDEF',
     success: '#03b252',
 
     shape: '#e1e1e8',

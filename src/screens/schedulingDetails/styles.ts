@@ -1,5 +1,6 @@
 import { View, Text, Image, ScrollView } from "react-native";
 // use later Dimensions for 'react-native'
+import { Feather } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 
@@ -42,8 +43,8 @@ export const CarSlide = styled(Image)`
 `;
 
 export const Content = styled(ScrollView)`
-    width: 100%;
-    margin-top: 36px;
+  width: 100%;
+  margin-top: 36px;
 `;
 
 export const Car = styled(View)``;
@@ -78,29 +79,73 @@ export const Value = styled(Text)`
   font-size: ${RFValue(25)}px;
 `;
 
-export const Details = styled(Text)`
-    font-family: ${({ theme }) => theme.fonts.primary_400};
-    color: ${({ theme }) => theme.colors.text};
-    font-size:${RFValue(14)}px;
-
-    margin-top: 24px;
-
-    line-height: 25px;
+export const Rent = styled(View)`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
-export const Rent = styled(View)`
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
-`
-
 export const FeaturesOfCar = styled(View)`
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 18px;
-
-`
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 18px;
+`;
 
 export const Footer = styled(View)``;
+
+export const RentDetails = styled(View)`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 40px;
+  border-bottom-width: 1px;
+  border-bottom-color: ${({ theme }) => theme.colors.line};
+
+  padding-bottom: 16px;
+`;
+export const CalendarContent = styled(View)`
+  width: 48px;
+  height: 48px;
+  background-color: ${({ theme }) => theme.colors.main};
+
+  align-items: center;
+  justify-content: center;
+`;
+export const RentDateContent = styled(View)``;
+
+export const Label = styled(Text)`
+  font-family: ${({ theme }) => theme.fonts.secondary_500};
+  color: ${({ theme }) => theme.colors.text};
+  text-transform: uppercase;
+  font-size: ${RFValue(10)}px;
+
+  margin-bottom: 8px;
+`;
+export const Icon = styled(Feather)``;
+export const Date = styled(Text)`
+  font-family: ${({ theme }) => theme.fonts.primary_500};
+  color: ${({ theme }) => theme.colors.title};
+  font-size: ${RFValue(15)}px;
+`;
+
+export const RentTotal = styled(View)`
+  margin-top: 16px;
+`;
+export const RentTotalDetails = styled(View)`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+export const TotalDesctiption = styled(Text)`
+  font-size: ${RFValue(15)}px;
+  font-family: ${({ theme }) => theme.fonts.primary_500};
+  color: ${({ theme }) => theme.colors.title};
+`;
+export const Total = styled(Text)`
+font-size: ${RFValue(24)}px;
+  font-family: ${({ theme }) => theme.fonts.secondary_600};
+  color: ${({ theme }) => theme.colors.success};
+
+`;

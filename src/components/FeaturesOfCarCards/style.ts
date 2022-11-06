@@ -10,11 +10,8 @@ export const Container = styled(View)`
     padding:16px;
     
 
-    background-color: ${({ theme}) => theme.colors.background_primary};
-
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 7px;
+    background-color: ${({ theme}) => theme.colors.shape};
+    margin-bottom: 8px
 
 `
 

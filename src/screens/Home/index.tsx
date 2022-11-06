@@ -1,38 +1,99 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useTheme } from "styled-components";
 import { StatusBar } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import { Container, Header, HeaderContainer, AmountCars } from "./styles";
+import { api } from "../../services/api";
 
-import Logo from '../../assets/logo.svg'
+import {
+  Container,
+  Header,
+  HeaderContainer,
+  AmountCars,
+  CartList,
+  MyCarsButton,
+} from "./styles";
+
+import { Loading } from "../../components/Loading";
+import Logo from "../../assets/logo.svg";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Cart } from "../../components/Car";
+import { useNavigation } from "@react-navigation/native";
+
+export type CarsProps = {
+  id: string;
+  brand: string;
+  name: string;
+  about: string;
+  rent: {
+    period: string;
+    price: number;
+  };
+  fuel_type: string;
+  thumbnail: string;
+  accessories: {
+    type: string;
+    name: string;
+  }[];
+  photos: string[];
+};
 
 export function Home() {
+  const theme = useTheme();
+  const navigation = useNavigation();
+  const [loading, setIsLoading] = useState(true);
+  const [cars, setCars] = useState<CarsProps[]>([]);
 
-  const CartOne = {
-    brand: 'audi',
-    model: 'RS 5 Coupé',
-    rent:{
-        price: 120,
-        period: '',
-    },
-    carImage: 'https://w7.pngwing.com/pngs/833/338/png-transparent-audi-rs5-car-audi-q5-audi-s5-audi-convertible-car-performance-car.png',
+  function handleRental(car: CarsProps) {
+    navigation.navigate("CarDetails" as never, { car } as never);
   }
+
+  useEffect(() => {
+    async function fetchCars() {
+      try {
+        const response = await api.get<void, { data: CarsProps[] }>("cars");
+        setCars(response.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchCars();
+  }, []);
 
   return (
     <Container>
-      <StatusBar translucent barStyle='light-content' backgroundColor='transparent'/>
+      <StatusBar
+        translucent
+        barStyle="light-content"
+        backgroundColor="transparent"
+      />
       <Header>
         <HeaderContainer>
-        <Logo width={RFValue(108)} height={RFValue(12)} />
-        <AmountCars>
-          Total de 12 carros  
-        </AmountCars> 
+          <Logo width={RFValue(108)} height={RFValue(12)} />
+          <AmountCars>{`Total de ${cars.length} carros`}</AmountCars>
         </HeaderContainer>
       </Header>
-      <Cart data={CartOne}  />
-      <Cart data={CartOne}  />
+      {loading ? (
+        <Loading />
+      ) : (
+        <CartList
+          data={cars}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <Cart data={item} onPress={() => handleRental(item)} />
+          )}
+        />
+      )}
 
+      <MyCarsButton onPress={() => navigation.navigate("MyCars" as never)}>
+        <Ionicons
+          name="car-sport"
+          size={30}
+          color={theme.colors.background_primary}
+        />
+      </MyCarsButton>
     </Container>
   );
 }

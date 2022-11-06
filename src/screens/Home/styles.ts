@@ -1,6 +1,10 @@
-import {View, Text } from 'react-native'
+import {View, Text, FlatList } from 'react-native'
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize'
+
+import {CarsProps} from './index'
+import { RectButton } from 'react-native-gesture-handler';
+
 export const Container = styled(View)`
     flex:1;
     background-color: ${({theme}) => theme.colors.background_primary};
@@ -24,3 +28,23 @@ export const  AmountCars = styled(Text)`
     font-size: ${RFValue(15)}px;
 
 `
+export const CartList = styled(FlatList<CarsProps>)`
+    flex: 1;
+`
+
+export const MyCarsButton = styled(RectButton)`
+    height: 60px;
+    width: 60px;
+
+    align-items: center;
+    justify-content: center;
+
+    color: ${({theme}) => theme.colors.background_primary};
+
+    position: absolute;
+    bottom: 13px;
+    right: 22px;
+
+    background-color: ${({theme}) => theme.colors.main};
+    border-radius: 30px;
+`;

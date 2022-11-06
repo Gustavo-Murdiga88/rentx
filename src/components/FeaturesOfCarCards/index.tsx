@@ -1,11 +1,9 @@
 import React, { FC } from "react";
+import { SvgProps } from "react-native-svg";
 import {Container, Subtitle} from './style';
-
-import Accelerator from '../../assets/acceleration.svg';
-
 interface CardFeatureOfCarProps {
   subTitle: string;
-  Icon: FC;
+  Icon: FC<SvgProps>;
 }
 
 export function CardFeatureOfCar({ subTitle, Icon }: CardFeatureOfCarProps) {
