@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, Dimensions } from "react-native";
 // use later Dimensions for 'react-native'
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
@@ -35,7 +35,7 @@ export const ActiveIndex = styled(View)<ActiveIndex>`
 `;
 
 export const CarSlide = styled(Image)`
-  width: 100%;
+  width: ${Dimensions.get('window').width}px; 
   height: ${RFValue(133)}px;
   align-items: center;
   justify-content: center;

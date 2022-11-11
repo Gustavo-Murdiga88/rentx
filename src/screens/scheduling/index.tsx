@@ -81,7 +81,7 @@ export function Scheduling() {
       totalDays,
     });
   }
-
+  
   return (
     <Container>
       <StatusBar

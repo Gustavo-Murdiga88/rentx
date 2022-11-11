@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
-import { StatusBar } from "react-native";
+import { StatusBar, BackHandler } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { api } from "../../services/api";
