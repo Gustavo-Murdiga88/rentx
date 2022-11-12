@@ -1,6 +1,7 @@
 import {View, Text, FlatList } from 'react-native'
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize'
+import Animated from 'react-native-reanimated';
 
 import {CarsProps} from './index'
 import { RectButton } from 'react-native-gesture-handler';

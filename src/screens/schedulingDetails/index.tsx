@@ -46,7 +46,7 @@ import speed from "../../assets/speed.svg";
 import { Button } from "../../components/Button";
 import { RFValue } from "react-native-responsive-fontsize";
 import { api } from "../../services/api";
-import { Loading } from "../../components/Loading";
+import { Loading } from "../../components/Loading/newLoading";
 
 const carImage =
   "https://w7.pngwing.com/pngs/833/338/png-transparent-audi-rs5-car-audi-q5-audi-s5-audi-convertible-car-performance-car.png";

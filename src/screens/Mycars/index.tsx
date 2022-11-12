@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { BackButtonComponent } from "../../components/BackButton";
 import { CardCarWithPeriod } from "../../components/CardCarWithPeriod";
-import { Loading } from "../../components/Loading";
+import { Loading } from "../../components/Loading/newLoading";
 import { api } from "../../services/api";
 import { CarsProps } from "../Home";
 import {

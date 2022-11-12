@@ -1,11 +1,12 @@
 import { View, Text, Image, ScrollView, Dimensions } from "react-native";
+import Animated from "react-native-reanimated";
 // use later Dimensions for 'react-native'
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 
 export const Container = styled(View)`
   flex: 1;
-  margin: 40px 24px;
+  margin: 40px 0px;
 `;
 export const Title = styled(Text)``;
 
@@ -14,6 +15,8 @@ export const HeaderSlider = styled(View)`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+  padding: 0px 24px;
+  
 `;
 export const ActiveIndexes = styled(View)`
   flex-direction: row;
@@ -41,9 +44,10 @@ export const CarSlide = styled(Image)`
   justify-content: center;
 `;
 
-export const Content = styled(ScrollView)`
+export const Content = styled(Animated.ScrollView)`
     width: 100%;
-    margin-top: 36px;
+    margin-top: 20px;
+    padding: 0px 24px;
 `;
 
 export const Car = styled(View)``;
@@ -103,4 +107,6 @@ export const FeaturesOfCar = styled(View)`
 
 `
 
-export const Footer = styled(View)``;
+export const Footer = styled(View)`
+  padding: 0 24px;
+`;
