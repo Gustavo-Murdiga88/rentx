@@ -4,10 +4,12 @@ import { Home } from "../screens/Home";
 import { CarDetails } from "../screens/CarDetails";
 import { Scheduling } from "../screens/scheduling";
 import { SchedulingDetails } from "../screens/schedulingDetails";
-import { SchedulingDone } from "../screens/schedulingDone";
+import { Confirmation } from "../screens/Confirmation";
 import {MyCars} from '../screens/Mycars'
 import {Splash} from '../screens/splash'
-
+import {SingIn} from '../screens/SingIn'
+import {SingUpFirstStep} from '../screens/SingUp/FirstStep'
+import {SingUpSecondStep} from '../screens/SingUp/SecondStep'
 
 const { Navigator, Screen } = createNativeStackNavigator();
 export function StackRoutes() {
@@ -15,6 +17,13 @@ export function StackRoutes() {
     <Navigator initialRouteName="Splash">
        <Screen name="Splash" component={Splash} options={{ headerShown: false }} />
       <Screen name="Home" component={Home} options={{ headerShown: false, gestureEnabled: true }} />
+      <Screen name="sing_up_firstStep" component={SingUpFirstStep} options ={{headerShown: false}} />
+      <Screen name="second_step" component={SingUpSecondStep  } options ={{headerShown: false}} />
+      <Screen
+        name="SingIn"
+        component={SingIn}
+        options={{ headerShown: false }}
+      />
       <Screen
         name="CarDetails"
         component={CarDetails}
@@ -31,8 +40,8 @@ export function StackRoutes() {
         options={{ headerShown: false }}
       />
       <Screen
-        name="SchedulingDone"
-        component={SchedulingDone}
+        name="confirmation"
+        component={Confirmation}
         options={{ headerShown: false }}
       />
        <Screen

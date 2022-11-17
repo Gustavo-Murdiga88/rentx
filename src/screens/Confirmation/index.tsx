@@ -15,17 +15,27 @@ import Done from "../../assets/done.svg";
 import { Button } from "../../components/Button";
 import { useTheme } from "styled-components";
 import { StatusBar } from "expo-status-bar";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-export function SchedulingDone() {
+type ConfirmationProps = {
+  title: string;
+  nextScreen: string;
+  message: string;
+};
+
+export function Confirmation() {
   const theme = useTheme();
+  const route = useRoute();
+
+  const { message, nextScreen, title } = route.params as ConfirmationProps;
+
   const navigation = useNavigation();
   function handleHome() {
-    navigation.navigate('Home' as never);
+    navigation.navigate(nextScreen as never);
   }
   return (
     <Container>
-      <StatusBar translucent backgroundColor="transparent" style="light"/>
+      <StatusBar translucent backgroundColor="transparent" style="light" />
       <Header>
         <XContainer>
           <X />
@@ -36,15 +46,15 @@ export function SchedulingDone() {
       </Header>
 
       <Content>
-        <Title>Carro Alugado!</Title>
-        <Description>
-          Agora você só precisa {'\n'} 
-          ir até a concessionária da RENTX {'\n'} 
-          pegar o seu automóvel
-        </Description>
-      <Footer>
-          <Button title="Ok" color={theme.colors.shape_dark} onPress={handleHome}/>
-      </Footer>
+        <Title>{title}</Title>
+        <Description>{message}</Description>
+        <Footer>
+          <Button
+            title="Ok"
+            color={theme.colors.shape_dark}
+            onPress={handleHome}
+          />
+        </Footer>
       </Content>
     </Container>
   );

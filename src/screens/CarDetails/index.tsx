@@ -40,6 +40,7 @@ import { Button } from "../../components/Button";
 import { CarsProps } from "../Home";
 import { getAccessoryIcon } from "../../utils/getAccessoryIcon";
 import { FlatList, ViewToken } from "react-native";
+import { Bubble } from "../../components/Bubble";
 
 type Car = {
   car: CarsProps;
@@ -91,7 +92,7 @@ export function CarDetails({ images }: CarDetails) {
         <BackButtonComponent type="dark" onPress={() => navigation.goBack()} />
         <ActiveIndexes>
           {car.photos.map((_, index) => (
-            <ActiveIndex key={index} active={imageIndex === index} />
+            <Bubble key={index} active={imageIndex === index} />
           ))}
         </ActiveIndexes>
       </HeaderSlider>

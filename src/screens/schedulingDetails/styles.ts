@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, Dimensions } from "react-native";
 // use later Dimensions for 'react-native'
 import { Feather } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -22,21 +22,9 @@ export const ActiveIndexes = styled(View)`
   align-items: center;
 `;
 
-type ActiveIndex = {
-  active: boolean;
-};
-export const ActiveIndex = styled(View)<ActiveIndex>`
-  height: 6px;
-  width: 6px;
-  margin-left: 8px;
-  border-radius: 3px;
-
-  background-color: ${({ theme, active }) =>
-    active ? theme.colors.title : theme.colors.text_detail};
-`;
 
 export const CarSlide = styled(Image)`
-  width: 100%;
+  width: ${Dimensions.get('window').width}px;
   height: ${RFValue(133)}px;
   align-items: center;
   justify-content: center;
@@ -138,7 +126,7 @@ export const RentTotalDetails = styled(View)`
   align-items: center;
   justify-content: space-between;
 `;
-export const TotalDesctiption = styled(Text)`
+export const TotalDescription = styled(Text)`
   font-size: ${RFValue(15)}px;
   font-family: ${({ theme }) => theme.fonts.primary_500};
   color: ${({ theme }) => theme.colors.title};

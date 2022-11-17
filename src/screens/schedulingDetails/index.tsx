@@ -1,4 +1,5 @@
-import react, { useEffect, useState } from "react";
+import react, { useEffect, useRef, useState } from "react";
+import { ViewToken } from "react-native";
 import { useTheme } from "styled-components";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -9,7 +10,6 @@ import {
   Container,
   HeaderSlider,
   ActiveIndexes,
-  ActiveIndex,
   CarSlide,
   Content,
   Car,
@@ -29,7 +29,7 @@ import {
   Date,
   RentTotal,
   RentTotalDetails,
-  TotalDesctiption,
+  TotalDescription,
   Total,
 } from "./styles";
 
@@ -47,9 +47,8 @@ import { Button } from "../../components/Button";
 import { RFValue } from "react-native-responsive-fontsize";
 import { api } from "../../services/api";
 import { Loading } from "../../components/Loading/newLoading";
-
-const carImage =
-  "https://w7.pngwing.com/pngs/833/338/png-transparent-audi-rs5-car-audi-q5-audi-s5-audi-convertible-car-performance-car.png";
+import { Bubble } from "../../components/Bubble";
+import { FlatList } from "react-native-gesture-handler";
 
 type SchedulingDetailsInfo = {
   rentalInfo: {
@@ -62,17 +61,30 @@ type SchedulingDetailsInfo = {
   id: string;
 };
 
+type ChangeImage = {
+  viewableItems: ViewToken[];
+  changed: ViewToken[];
+};
+
 export function SchedulingDetails({ images }: CarDetails) {
   const theme = useTheme();
   const route = useRoute();
   const { rentalInfo, id } = route.params as SchedulingDetailsInfo;
   const navigation = useNavigation();
+  const [index, setIndex] = useState<number>(0);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [car, setCar] = useState({} as CarsProps);
 
   const totalRent = car.rent?.price * rentalInfo.totalDays;
+
+  const carIndexChange = useRef((info: ChangeImage) => {
+    const index = info.viewableItems[0].index;
+    if (typeof index === "number") {
+      setIndex(index);
+    }
+  });
 
   useEffect(() => {
     async function getCar() {
@@ -107,7 +119,14 @@ export function SchedulingDetails({ images }: CarDetails) {
         endDate,
       })
       .then(() => {
-        navigation.navigate("SchedulingDone" as never);
+        navigation.navigate(
+          "confirmation" as never,
+          {
+            message: `Agora você só precisa ir\naté a concessionária da RENTX`,
+            nextScreen: "Home",
+            title: "Carro alugado!",
+          } as never
+        );
       })
       .catch(() => {
         setIsSubmit(false);
@@ -126,15 +145,24 @@ export function SchedulingDetails({ images }: CarDetails) {
               onPress={() => navigation.goBack()}
             />
             <ActiveIndexes>
-              <ActiveIndex active={true} />
-              <ActiveIndex active={false} />
-              <ActiveIndex active={false} />
-              <ActiveIndex active={false} />
+              {car.photos.map((photo, indexPhoto) => (
+                <Bubble key={photo} active={indexPhoto === index} />
+              ))}
             </ActiveIndexes>
           </HeaderSlider>
-          <CarSlide
-            source={{ uri: car.photos?.[0] || carImage }}
-            resizeMode="contain"
+
+          <FlatList
+            data={car.photos}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <CarSlide
+                source={{ uri: car.photos?.[0] }}
+                resizeMode="contain"
+              />
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            onViewableItemsChanged={carIndexChange.current}
           />
 
           <Content showsVerticalScrollIndicator={false}>
@@ -183,9 +211,9 @@ export function SchedulingDetails({ images }: CarDetails) {
             <RentTotal>
               <Label>Total</Label>
               <RentTotalDetails>
-                <TotalDesctiption>
+                <TotalDescription>
                   {`R$ ${car.rent?.price || 0} x ${rentalInfo.totalDays}`}
-                </TotalDesctiption>
+                </TotalDescription>
                 <Total>{`R$ ${totalRent}`}</Total>
               </RentTotalDetails>
             </RentTotal>

@@ -42,7 +42,7 @@ export function Splash() {
   })
 
   function goHome(){
-    navigation.navigate('Home' as never)
+    navigation.navigate('SingIn' as never)
   }
 
   useEffect(() => {
