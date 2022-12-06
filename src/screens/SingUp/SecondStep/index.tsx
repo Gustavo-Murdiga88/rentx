@@ -1,11 +1,10 @@
-import react, { useEffect, useRef, useState } from "react";
+import react, { useState } from "react";
 import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
   Alert,
 } from "react-native";
-import {} from "react";
 import * as yup from "yup";
 
 import { BackButtonComponent } from "../../../components/BackButton";
@@ -20,10 +19,20 @@ import {
   Form,
   FormTitle,
 } from "./styles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute} from "@react-navigation/native";
 import { useTheme } from "styled-components";
+import { api } from "../../../services/api";
+
+interface RouteParams {
+    name: string;
+    email: string; 
+    licenseDriver: string;
+}
+
 
 export function SingUpSecondStep() {
+  const router = useRoute();
+  const {licenseDriver, name, email} = router.params as RouteParams
   const theme = useTheme();
   const navigation = useNavigation();
   const [password, setPassword] = useState("");
@@ -51,11 +60,20 @@ export function SingUpSecondStep() {
       }
       await scheme.validate(data);
 
+      await api.post('/users', {
+        email,
+        password,
+        driver_license: licenseDriver,
+        name,
+      }).then(() => {
       navigation.navigate("confirmation" as never, {
         message: '',
         nextScreen: 'SingIn',
         title: 'Conta criada!'
       } as never);
+    }).catch((err) => {
+      Alert.alert('Opa', 'Problemas ao criar uma nova conta, por favor tente mais tarde.')
+    })
     } catch (e) {
       if (e instanceof yup.ValidationError) {
         Alert.alert(e.message);

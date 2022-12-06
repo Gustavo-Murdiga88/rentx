@@ -1,6 +1,8 @@
 import React from "react";
 import { RectButtonProps } from 'react-native-gesture-handler'
 
+import { cars } from '../../database/models/cars'
+
 import {
   Container,
   AsideContent,
@@ -16,14 +18,16 @@ import {
 
 import {CarsProps} from '../../screens/Home/index'
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
+import { useNetInfo } from "@react-native-community/netinfo";
 
 interface CartProps extends CarsProps {}
 
 interface Cart extends RectButtonProps {
-  data: CartProps;
+  data: cars;
 }
 
 export function Cart({data, ...rest} : Cart) {
+  const isConnected = useNetInfo().isConnected === true;
   const Motor = getAccessoryIcon(data.fuel_type);
 
   return (
@@ -36,14 +40,14 @@ export function Cart({data, ...rest} : Cart) {
         <RentContainer>
           <Description>Ao dia</Description>
           <PriceRentContainer>
-            <PriceRent>R$ {data.rent.price || 0}</PriceRent>
+            <PriceRent>R$ {isConnected ? data.price : '...'}</PriceRent>
             <Motor />
           </PriceRentContainer>
         </RentContainer>
       </AsideContent>
       <Car
         source={{
-          uri: data?.photos[0],
+          uri: data?.thumbnail,
         }}
         resizeMode='cover'
       />

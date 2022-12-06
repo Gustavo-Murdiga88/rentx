@@ -1,5 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
+
 import { BackButtonComponent } from "../../components/BackButton";
 import { CardCarWithPeriod } from "../../components/CardCarWithPeriod";
 import { Loading } from "../../components/Loading/newLoading";
@@ -15,36 +17,40 @@ import {
   SchedulingCount,
   InfoContainer,
   CarsList,
-  CarsListContainer
+  CarsListContainer,
 } from "./styles";
+import { cars as ModelCar } from "../../database/models/cars";
 
 export type SchedulesProps = {
-  car: CarsProps;
-  startDate: string;
-  endDate: string;
+  car: cars;
+  start_date: string;
+  end_date: string;
   id: string;
 };
 
 export function MyCars() {
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [schedules, setSchedules] = useState<SchedulesProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function getSchedule() {
-      try{
-      const response = await api.get("/schedules_byuser");
-      if (response.data) {
-        setSchedules(response.data);
-        setIsLoading(false); 
+      try {
+        const response = await api.get("/rentals");
+        if (response.data) {
+          setSchedules(response.data);
+          setIsLoading(false);
+        }
+      } catch (e) {
+        console.log("erros cars", e);
+        setIsLoading(false);
       }
-    }catch {
-      setIsLoading(false);
-    }
     }
 
     getSchedule();
-  }, []);
+  }, [isFocused]);
+
   return (
     <Container>
       <Header>
@@ -59,8 +65,10 @@ export function MyCars() {
           <SchedulingCount> {schedules.length} </SchedulingCount>
         </InfoContainer>
       </SchedulingContainer>
-        <CarsListContainer>
-        {isLoading ? <Loading /> : (
+      <CarsListContainer>
+        {isLoading ? (
+          <Loading />
+        ) : (
           <CarsList
             data={schedules}
             showsHorizontalScrollIndicator={false}
@@ -69,13 +77,13 @@ export function MyCars() {
             renderItem={({ item }) => (
               <CardCarWithPeriod
                 data={item.car}
-                endDate={item.endDate}
-                startDate={item.startDate}
+                endDate={item.end_date}
+                startDate={item.start_date}
               />
             )}
           ></CarsList>
         )}
-        </CarsListContainer>
+      </CarsListContainer>
     </Container>
   );
 }

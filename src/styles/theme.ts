@@ -9,6 +9,8 @@ export const theme = {
     text_detail: "#aeaeb3",
     title: "#47474d",
 
+    gray: '#41414D',
+
     line: '#ebebf0',
 
     main: '#dc1637',

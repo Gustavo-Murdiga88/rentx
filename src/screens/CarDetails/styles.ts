@@ -1,8 +1,10 @@
-import { View, Text, Image, ScrollView, Dimensions } from "react-native";
+import { View, Text, ScrollView, Dimensions } from "react-native";
 import Animated from "react-native-reanimated";
 // use later Dimensions for 'react-native'
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
+
+import Image from 'react-native-fast-image'
 
 export const Container = styled(View)`
   flex: 1;
@@ -39,7 +41,7 @@ export const ActiveIndex = styled(View)<ActiveIndex>`
 
 export const CarSlide = styled(Image)`
   width: ${Dimensions.get('window').width}px; 
-  height: ${RFValue(133)}px;
+  height: ${RFValue(120)}px;
   align-items: center;
   justify-content: center;
 `;

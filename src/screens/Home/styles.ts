@@ -1,6 +1,7 @@
 import {View, Text, FlatList } from 'react-native'
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize'
+import { cars } from '../../database/models/cars';
 import Animated from 'react-native-reanimated';
 
 import {CarsProps} from './index'
@@ -29,7 +30,7 @@ export const  AmountCars = styled(Text)`
     font-size: ${RFValue(15)}px;
 
 `
-export const CartList = styled(FlatList<CarsProps>)`
+export const CartList = styled(FlatList<cars>)`
     flex: 1;
 `
 

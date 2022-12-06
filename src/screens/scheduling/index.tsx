@@ -24,8 +24,8 @@ import { useState } from "react";
 import { getGenerateInterval } from "../../components/calendar/getDateInterval";
 
 type RentalPeriod = {
-  start: number;
-  end: number;
+  start: string;
+  end: string;
   totalDays: number;
   startFormatted: string;
   endFormatted: string;
@@ -71,8 +71,8 @@ export function Scheduling() {
     const endPeriod = Object.keys(interval)[Object.keys(interval).length - 1];
     const totalDays = Object.keys(interval).length; 
     setRentalPeriod({
-      end: end.timestamp,
-      start: start.timestamp,
+      end: getPlatformDate(new Date(end.timestamp)).toISOString(),
+      start: new Date(start.timestamp).toISOString(),
       endFormatted: format(getPlatformDate(new Date(endPeriod)), "dd/MM/yyyy"),
       startFormatted: format(
         getPlatformDate(new Date(startPeriod)),

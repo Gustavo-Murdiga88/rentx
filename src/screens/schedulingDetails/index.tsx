@@ -49,6 +49,7 @@ import { api } from "../../services/api";
 import { Loading } from "../../components/Loading/newLoading";
 import { Bubble } from "../../components/Bubble";
 import { FlatList } from "react-native-gesture-handler";
+import { useAuthContext } from "../../context/Auth";
 
 type SchedulingDetailsInfo = {
   rentalInfo: {
@@ -67,6 +68,9 @@ type ChangeImage = {
 };
 
 export function SchedulingDetails({ images }: CarDetails) {
+  const {
+    user: { id_user },
+  } = useAuthContext();
   const theme = useTheme();
   const route = useRoute();
   const { rentalInfo, id } = route.params as SchedulingDetailsInfo;
@@ -77,7 +81,7 @@ export function SchedulingDetails({ images }: CarDetails) {
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [car, setCar] = useState({} as CarsProps);
 
-  const totalRent = car.rent?.price * rentalInfo.totalDays;
+  const totalRent = car.price * rentalInfo.totalDays;
 
   const carIndexChange = useRef((info: ChangeImage) => {
     const index = info.viewableItems[0].index;
@@ -98,7 +102,8 @@ export function SchedulingDetails({ images }: CarDetails) {
       );
 
       if (response.data.length > 0) {
-        setCar(response.data[0]);
+        const car = response.data.filter((item) => item.id === id);
+        setCar(car[0]);
         setIsLoading(false);
       } else {
         navigation.goBack();
@@ -107,16 +112,18 @@ export function SchedulingDetails({ images }: CarDetails) {
     getCar();
   }, []);
 
-  async function AcceptedSchedunling() {
+  async function AcceptedScheduling() {
     setIsSubmit(true);
-    const startDate = rentalInfo.startFormatted;
-    const endDate = rentalInfo.endFormatted;
+    const startDate = rentalInfo.start;
+    const endDate = rentalInfo.end;
+
     api
-      .post("/schedules_byuser", {
-        user_id: 1,
-        car,
-        startDate,
-        endDate,
+      .post("/rentals", {
+        user_id: id_user,
+        car_id: id,
+        start_date: startDate,
+        end_date: endDate,
+        total: totalRent
       })
       .then(() => {
         navigation.navigate(
@@ -128,7 +135,7 @@ export function SchedulingDetails({ images }: CarDetails) {
           } as never
         );
       })
-      .catch(() => {
+      .catch((err) => {
         setIsSubmit(false);
       });
   }
@@ -146,23 +153,23 @@ export function SchedulingDetails({ images }: CarDetails) {
             />
             <ActiveIndexes>
               {car.photos.map((photo, indexPhoto) => (
-                <Bubble key={photo} active={indexPhoto === index} />
+                <Bubble key={photo.id} active={indexPhoto === index} />
               ))}
             </ActiveIndexes>
           </HeaderSlider>
 
           <FlatList
             data={car.photos}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <CarSlide
-                source={{ uri: car.photos?.[0] }}
-                resizeMode="contain"
-              />
+              <CarSlide source={{ uri: item.photo }} resizeMode="contain" />
             )}
             horizontal
             showsHorizontalScrollIndicator={false}
             onViewableItemsChanged={carIndexChange.current}
+            style={{
+              height: 200,
+            }}
           />
 
           <Content showsVerticalScrollIndicator={false}>
@@ -173,7 +180,7 @@ export function SchedulingDetails({ images }: CarDetails) {
               </Car>
               <Price>
                 <Period>Ao dia</Period>
-                <Value>{`R$ ${car.rent?.price || 0}`}</Value>
+                <Value>{`R$ ${car.price || 0}`}</Value>
               </Price>
             </Rent>
             <FeaturesOfCar>
@@ -212,7 +219,7 @@ export function SchedulingDetails({ images }: CarDetails) {
               <Label>Total</Label>
               <RentTotalDetails>
                 <TotalDescription>
-                  {`R$ ${car.rent?.price || 0} x ${rentalInfo.totalDays}`}
+                  {`R$ ${car.price || 0} x ${rentalInfo.totalDays}`}
                 </TotalDescription>
                 <Total>{`R$ ${totalRent}`}</Total>
               </RentTotalDetails>
@@ -221,7 +228,7 @@ export function SchedulingDetails({ images }: CarDetails) {
           <Footer>
             <Button
               title="Alugar agora"
-              onPress={AcceptedSchedunling}
+              onPress={AcceptedScheduling}
               color={theme.colors.success}
               isLoading={isSubmit}
               enabled={!isSubmit}

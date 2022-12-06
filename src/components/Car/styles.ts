@@ -1,7 +1,9 @@
-import { Text, View, Image } from "react-native";
+import { Text, View  } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components";
+
+import Image from 'react-native-fast-image'
 
 export const Container = styled(RectButton)`
   flex-direction: row;

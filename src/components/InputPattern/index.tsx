@@ -54,6 +54,9 @@ const input: ForwardRefRenderFunction<ComponentProps<typeof TextInput>, InputPro
           secureTextEntry={!showPassword && type === 'password'}
           onFocus={onFocus}
           onBlur={onBlur}
+          style={{ 
+            color: props.editable === false ? theme.colors.text : ''
+          }}
         />
         {type === 'password' && (
           <ContainerIconRight
